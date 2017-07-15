@@ -1,0 +1,116 @@
+#TemplateTable{
+	display:none;
+}
+
+#loadFromFileDiv,
+#changeSelectedDiv,
+#filtersFormDiv,
+#configColsDiv,
+#supportCardsDiv,
+#validateDiv,
+#loadFromServerDiv,
+#MsgsDiv,
+#copyrightDiv
+{
+	display:none;
+	border:1px solid indigo;
+	background:#fffacd;
+	color:indigo;
+	min-width:200px;
+	min-height:200px;
+	padding:3px;
+}
+
+#loadFromFileDiv a,
+#changeSelectedDiv a,
+#filtersFormDiv a,
+#configColsDiv a,
+#supportCardsDiv a,
+#validateDiv a,
+#loadFromServerDiv a,
+#MsgsDiv a,
+#copyrightDiv a
+{
+	color:blue;
+	background:#fffacd;
+}
+
+.savedata{
+			background-color:black;/*#d8d8d8;*/ 
+			color:black;
+			margin-bottom:2px;
+			display:none;
+}
+.save_data_link { 
+		  padding:2px;
+		  font-size:86%;
+		  text-decoration: underline;
+		  border:1px solid #6080a0;
+		  /*background-color:#d8d8d8;
+		  color:black;*/
+}
+#filtersForm ul {
+	list-style-type:none;
+	margin:0px;
+	padding:0px;
+}
+.namecol {
+	position: absolute;
+	width: 9.1em;
+	left:0;
+	top:auto;
+	margin-top:0px;
+	/*color:indigo;
+	background-color:#fffacd;*/
+	background-color:darkgray;
+	background:darkgray;
+	z-index:-5;
+}
+.titlecol {
+	position: absolute;
+	width: 7.9em;
+	left:9.1em;
+	top:auto;
+	margin-top:0px;
+	/*color:indigo;
+	background-color:#fffacd;*/
+	background-color:darkgray;
+	z-index:-6;
+}
+#chartablediv {
+	/*width:600px;*/
+	overflow-x: scroll;
+	margin-left:17.0em;
+	/*overflow-y:visible;*/
+	padding-bottom:1px;
+}
+#allCharsBonusTable{
+	border-collapse:collapse;
+}
+#allCharsBonusTable caption,
+#allCharsBonusTable td {
+	border:1px solid;
+	padding:2px;
+	margin:0;
+	font-size:90%;
+}
+
+#CharBonusesTable {
+	border-collapse:collapse;	
+	font-size:90%;
+}
+#CharBonusesTable caption,
+#CharBonusesTable td,
+#CharBonusesTable th {
+	border:1px solid indigo;
+	padding:2px;
+	margin:0;
+}
+#dmgBonusSet td {
+	background:#9cdeff; /*#007fff;*/
+	color:black
+}
+#hthBonusSet td {
+	background:#FF3c3c;
+	color:black
+}

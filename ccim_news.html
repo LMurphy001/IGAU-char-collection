@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>News: Character Collection for Injustice Mobile</title>
+	
+	<meta name="description" content="" />	
+	<meta name="keywords" content="" />	
+	<meta name="robots" content="index, follow" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script type="text/javascript" src="../scripts/popup.js"></script>
+
+	<link rel="stylesheet" href="../style.css" type="text/css"/>
+</head>
+
+<body>
+
+<div id="header">
+	<div class="centeredWide">News: Character Collection for Injustice Mobile</div>
+
+	<ul id="menubar">
+		<li class="dropdown">
+			<span class="dropbtn">File</span>
+			<div class="dropdown-content">
+				<span onclick="">Menu Command</span>
+			</div>
+		</li>
+	</ul>
+</div><!--header-->
+
+<div id="content">
+
+	<br><br><br><br>
+	<p>This is news for 
+		<a href="index.html" target="_blank">Character Collection for Injustice Mobile</a>.
+	</p>
+	
+		<h2>Known Issues</h2>
+	<ol>
+		<li>Initial open of form: bottom scrollbar is still too wide</li>
+		<li>Customizing columns and their order: when form first comes up, the list at the bottom is sometimes in the wrong order from what is currently in the actual table</li>
+		<li>When a new character card is added to characters.js, old saved collections become invalid. 
+			Need to add code to merge blank records, after the saved chars data is loaded, for these new character cards.</li>
+	</ol>
+	
+	<h2>Done</h2>
+	Most recently done is on top.
+	<ol>
+		<li>12/18/2016: Added additional automatically calculated field "Elite Plus Extra Cards" - displaying, sorting, filtering. Hopefully it will help with the 'Breakthrough' feature (promoting cards beyond e7 50).</li>
+		<li>12/18/2016: Added elite filter levels for 8, 9 and 10</li>
+		<li>12/18/2016: When first opening the page, the previous page only showed three columns: Select, Elite, XP. This version shows Select, Elite, Xp, Damage, Health, Extra Cards, Elite Plus Extra Cards</li>
+		<li>12/18/2016: Fixed code which Restores a saved collection. (Checkbox for color, Tag name, sorted by drop-down box</li>
+		<li>12/18/2016: Made 'Tag' a required field when saving to the server.</li>
+		<li>Test 'Load from server collections'. Medium effort.</li>
+		<li>Implement 'Save to Server'. Medium effort.</li>
+		<li>Added 'Cost' filter</li>
+		<li>Added 'Resale' column</li>
+		<li>Fixed elite and xp validation when 'onchange' event fires</li>
+		<li>Write Validate()</li>
+		<li>Changed generic 'showMessage' to use a dynamic Popup, if available</li>
+		<li>Updated guide page</li>
+		<li>Fixed: Bottom scrollbar of character table extends too far on the right.</li>
+		<li>Implement 'Edit Bonuses'.</li>
+		<li>Updated 'Filters' and tested. Seems to be working now.</li>
+		<li>Pin Name,Title,Select columns on the left; make all other columns scroll horz on the right.</li>
+		<li>Update To Do list in the Guide</li>
+		<li>Give user the ability to configure the list of columns and the order in which they're displayed</li>
+	</ol>
+	
+	<h2>Coding 'To Do'</h2>
+	<ol>
+		<li>Write Form so players can report problems, ask questions, or make suggestions to the tools</li>
+		
+		<li>Make a list of all functionality. Include it in the guide. Medium effort.</li>
+		
+		<li>Test all functionality, debug, test changes. Large effort.</li>
+		
+		<li>Refactor code, make improvements in readability, maintainability, modularity, scalability, performance.
+		
+		<li>Rewrite javascript as jquery? Fast enough?</li>
+		
+		<li>Combine and minify all javascript before deploying. Improve deployment procedure if possible.</li>
+
+		<li>Add statistics/analysis. Medium effort.</li>
+		
+		<li>Implement 'Make Donation'. Effort unknown.</li>
+		
+		<li>Find a way for users to 'login' and 'logout'. HTTPS needed? Use OpenId? Cost in USD? Effort?</li>
+
+		<li>Long term: Add a "Gears" collection spreadsheet. Need all relevant gear properties.  Very Large Effort</li>
+
+		<li>Long term: Add a way to gather teams of 3 characters plus up to 3 gear per character from the spreadsheets. 
+			Ability to name the team. Add the last modification timestamp automatically, and 
+			save it all somewhere (file, server). A collection of teams, in a spreadsheet. 
+			Major enhancement. Very Large Effort.</li>		
+	</ol>
+	
+	<h2>Documentation 'To Do'</h2>
+	
+	<ol>
+		<li>Write the Guide</li>
+	</ol>
+	<!--
+		<li>Fix blog. Maybe uninstalling and re-installing it is faster, easier? Large effort.</li>
+		
+		<li>Update the guide page. Include the purpose of the tool, a list of all functionality,
+		'how-tos', reproducible issues, reported issues, to do list, suggestion list with polls to get user votes... Large effort.</li>
+		
+		<li>Write a blog page for the Character Collection tool. Link to both the tool and the guide. 
+			Ask people to comment, make suggestions, report problems, ask questions, etc. Large effort</li>
+		
+		<li>From the tool page and the guide page, include link to the blog page for Character Collection tool. Small effort.</li>
+		
+		<li>Possibly turn the 'Guide' into a blog page? Or combine the two blog pages? 
+		Will need to decide how the content I write makes most sense spread out over blog pages. 
+		Guide probably needs to be a static page. 
+		On-going items such as "News", "To-Do", "Done", "Reported Issues", "Reproducible Issues", 
+		"Suggestions", "Polls", "Questions" are more dynamic. 
+		How? Does each suggestion become its own page? Does the list of suggestions become a page which I edit?</li>
+		
+	</ol>-->
+	
+	
+
+	
+	
+	<br><br><br><br>
+</div><!--content-->
+
+<div id="footer">
+	<div class="centeredWide"><a href="../makeDonation" target="_blank">Make Donation</a></div>
+</div><!--footer-->
+
+</body>
+</html>

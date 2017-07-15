@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Character Spreadsheet for Injustice Mobile</title>
+	
+	<meta name="description" content="Character Collection Spreadsheet for Injustice Mobile" />	
+	<meta name="keywords" content="injustice mobile,character spreadsheet" />	
+	<meta name="robots" content="index, follow" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script type="text/javascript" src="otherCode.js"></script>
+
+	<link rel="stylesheet" href="style.css" type="text/css"/>
+	<link rel="stylesheet" href="ccim.css" type="text/css"/>
+</head>
+
+<body class="blackonwhite">
+<div id="helper" style="display:none;border:1px solid slategray;background-color:darkgray;color:white;padding:2px;"></div>
+
+<div id="header">
+	<div class="centeredWide">Character Spreadsheet for Injustice Mobile</div>
+
+	<ul id="menubar">
+		<li class="dropdown">
+			<span class="dropbtn">File</span>
+			<div class="dropdown-content">
+				<span onclick="CCIM_Save.saveToServer();">Save to Server</span>
+				<span onclick="CCIM_Restore.showLoadFromServer();">Load from Server</span>
+				<span onclick="CCIM_Save.saveToFile();">Save to local file</span>
+				<span onclick="CCIM_Restore.LoadFromFileCmd();">Load from local file</span>
+				<span onclick="CCIM_Save.validateUserData();">Validate Data</span>
+			</div>
+		</li>
+		
+		<li class="dropdown">
+			<span class="dropbtn">Edit</span>
+			<div class="dropdown-content">
+				<span onclick="CCIM_CurrentPage.changeSelectedRows();">Change selected characters</span>
+				<span onclick="CCIM_Bonuses.showChangeBonuses();">Change support cards (bonuses)</span>
+				<span onclick="CCIM_CurrentPage.InitializeFiltersAndCollection();">Erase Collection &amp; Filters</span>
+				<span>Change to maximum values with <br>augmentations of
+					<input type="radio" name="rd_augmentations" onchange="CCIM_CurrentPage.changeToMaximums(0);">0%
+					<input type="radio" name="rd_augmentations" onchange="CCIM_CurrentPage.changeToMaximums(0.50);">50%
+					<input type="radio" name="rd_augmentations" onchange="CCIM_CurrentPage.changeToMaximums(1.00);">100% 
+					
+				</span>
+			</div>
+		</li>
+		
+		<li class="dropdown">
+			<span class="dropbtn">Select</span>
+			<div class="dropdown-content">
+				<span onclick="CCIM_CurrentPage.SelAll();">Select All</span>
+				<span onclick="CCIM_CurrentPage.SelNone();">Deselect All</span>
+				
+				<span onclick="CCIM_CurrentPage.SelCurPage();">Add Page to Selected</span>
+				<span onclick="CCIM_CurrentPage.DeselCurPage();">Remove Page from Selected</span>
+				
+				<span onclick="CCIM_CurrentPage.InvertSel();">Invert selection</span>
+			</div>
+		</li>
+		
+		<li class="dropdown">
+			<span class="dropbtn">View</span>
+			<div class="dropdown-content">
+				<span onclick="CCIM_Filters.showFilters();">Filters</span>
+				<span onclick="CCIM_CurrentPage.ShowAll();">Show all</span>
+				<span onclick="CCIM_CurrentPage.HideSel();">Hide selected</span>
+				
+				<!--<span></span>-->
+				<span onclick="CCIM_CurrentPage.InvertHidden();">Invert hidden</span>
+			</div>
+		</li>
+		
+		<li class="dropdown">
+			<span class="dropbtn">Preferences</span>
+			<div class="dropdown-content">
+				<span>Dark theme <input id='darkThemeCheckBox' type='checkbox' onchange="CCIM_Main.changeColorTheme(this);" /></span>
+				<span onclick="CCIM_Main.ChangeCharsPerPage();">Change #characters per page</span>
+				<span onclick="CCIM_ConfigColumns.showConfigureColumns();">Configure Columns</span>
+			</div>
+		</li>
+		
+		<li class="dropdown">
+			<span class="dropbtn">Help</span>
+			<div class="dropdown-content">
+				<span><a href="ccim_guide.html"			target='ccim_guide'>Guide</a></span>
+				<span><a href="ccim_news.html" 			target='ccim_news'>News</a></span>
+				<!--<span><a href="/igauchat/?room=CharSS" 	target="lmav_chat">Live Chat</a></span>-->
+				<!--<span><a href="/makeDonation/" target="lmav_donate">Make Donation (not ready yet)</a></span>-->
+				<span onclick="CCIM_Main.showCopyright();">Copyrights &amp;  Permissions</span>
+				<span><a href="/mobinjcharstatscalc/calc.html" target="mobinjcharstatscalc">Character Stats Calculator</a></span>
+			</div>
+		</li>
+
+	</ul><!--menubar-->
+</div><!--header-->
+
+<div id="content">
+
+	<div id="topspace"></div>
+
+	<div id="constants">
+		Tag: <input id='tag' size=10 maxlength=16 onchange='CCIM_Main.fixTag();' 
+					title="Tag: Letters, numbers, space or underscore" 
+					onFocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+					onBlur="CCIM_Main.helperPopup.hide();" />&nbsp;&nbsp;
+		Sorted by: <select id="sortCharsBy" onchange="CCIM_CurrentPage.onClickSortCharacters();">
+						<option>Color</option>
+						<option selected>Name</option>
+						<option>Title</option>
+						<option>XP</option>
+						<option>Elite</option>
+
+						<option>Damage</option>
+						<option>Health</option>
+						<option>Damage Bonus</option>
+						<option>Health Bonus</option>
+						<option>Damage Augmentation Level</option>
+						<option>Health Augmentation Level</option>
+						<option>Base Damage</option>
+						<option>Base Health</option>
+						<option>Base Damage Plus Health</option>
+						<option>Cost</option>
+
+						<option>Selected</option>
+
+						<option>Gear Slots</option>
+						<option>In Store</option>
+						<option>Extra Cards</option>
+						<option>Elite Plus Extra Cards</option>
+						
+						<option>Damage Plus Health</option>
+
+						<option>Crit Chance</option>
+						<option>Crit Damage</option>
+
+						<option>Sp1 Bars</option>
+						<option>Sp1 Min</option>
+						<option>Sp1 Max</option>
+
+						<option>Sp2 Bars</option>
+						<option>Sp2 Min</option>
+						<option>Sp2 Max</option>
+
+						<option>Super Bars</option>
+						<option>Super</option>
+					</select>&nbsp;&nbsp;
+		#Hidden: <span class='NumHidden'>0</span>&nbsp;&nbsp;
+		#Selected: <span class="NumSelected">0</span>
+		<br>
+		
+		<!-- <input type='button' value='Change Bonuses' onclick='CCIM_Bonuses.showChangeBonuses();' /> -->
+		
+		
+	</div><!--constants-->
+	
+	<div><!-- chartable, messages, template -->
+		
+		<div id="chartablediv"><!--chartable-->
+			<table id='CharTable'></table>
+		</div><!--chartable-->
+		
+		<div id="templatediv"><!--template-->
+			<table id='TemplateTable'>
+		
+				<caption>Characters</caption>
+
+				<thead>
+					<tr id='template_hdrrow1'>
+						<th id="th_Name" class="namecol">Name</th> 
+						<th id="th_Title" class="titlecol">Title</th> 
+						<th id="th_Select">Select</th>
+						<th id="th_Elite">Elite</th>
+						<th id="th_XP">XP</th>
+						<th id="th_Damage">Damage</th>
+						<th id="th_Health">Health</th>
+					<!--</tr>
+					
+					<tr id='template_hdrrow2'>-->
+						<th id="th_Sp1Bars">Sp1<br>Bars</th>  
+						<th id="th_Sp2Bars">Sp2<br>Bars</th>
+						<th id="th_SuperBars">Super<br>Bars</th> 
+						<th id="th_CritChance">Crit<br>Ch.</th>
+						<th id="th_CritDamage">Crit<br>Dmg</th>
+						<th id="th_GearSlots">Gear<br>Slots</th>
+						<th id="th_InStore">In<br>Store</th>
+						<th id="th_ExtraCards">Extra<br>Cards</th>
+
+						<th id="th_DamagePlusHealth">Damage<br>+ Health</th>
+
+						<th id="th_Cost">Cost(K)</th>
+						<th id="th_Resale">Est.<br>Resale<br>(K)</th>
+					<!--</tr>
+					
+					<tr id='template_hdrrow3'>-->
+						<th id="th_Sp1Min">Sp1<br>Min</th>
+						<th id="th_Sp1Max">Sp1<br>Max</th>
+						<th id="th_Sp2Min">Sp2<br>Min</th>
+						<th id="th_Sp2Max">Sp2<br>Max</th> 
+						<th id="th_Super">Super</th>
+						<th id="th_DamageAug">Dmg<br>Aug</th>
+						<th id="th_HealthAug">Hth<br>Aug</th> 
+						<th id="th_BaseDamage">Base<br>Dmg</th>
+						<th id="th_BaseHealth">Base<br>Hth</th>
+						<th id="th_BaseDamagePlusHealth">Base Dmg<br>+ Health</th>
+						<th id="th_ElitePlusExtraCards">Elite +<br>Extra C</th>
+					</tr>
+				</thead>
+		
+				<tfoot>
+					<tr id='template_footrow'>
+						<th colspan="28">
+						<a href="#sortCharsBy"
+							onclick='CCIM_CurrentPage.goToPage(1);' 
+							title="Go to 1st page">&lt;&lt;</a>&nbsp;&nbsp;
+
+						
+						<a href="#sortCharsBy"
+							onclick='CCIM_CurrentPage.goToPage(CCIM_Data.getCurPageNum()-5);' 
+							title="Back 5 pages">&lt; 5</a>&nbsp;&nbsp;
+
+						<a href="#sortCharsBy"
+							onclick='CCIM_CurrentPage.goToPage(CCIM_Data.getCurPageNum()-2);' 
+							title="Back 2 pages">&lt; 2</a>&nbsp;&nbsp;
+
+						<a href="#sortCharsBy" 
+							onclick='CCIM_CurrentPage.goToPage(CCIM_Data.getCurPageNum()-1);' 
+							title="Back 1 page">&lt; 1</a>&nbsp;&nbsp;
+
+						<span id='curPageNum'>Page 1</span>&nbsp;&nbsp;
+
+						<a href="#sortCharsBy" 
+							onclick='CCIM_CurrentPage.goToPage(CCIM_Data.getCurPageNum()+1);' 
+							title="Forward 1 page">&gt; 1</a>&nbsp;&nbsp;
+
+						<a href="#sortCharsBy"
+							onclick='CCIM_CurrentPage.goToPage(CCIM_Data.getCurPageNum()+2);' 
+							title="Forward 2 pages">&gt; 2</a>&nbsp;&nbsp;
+
+						<a href="#sortCharsBy"
+							onclick='CCIM_CurrentPage.goToPage(CCIM_Data.getCurPageNum()+5);' 
+							title="Forward 5 pages">&gt; 5</a>&nbsp;&nbsp;
+						
+						
+						<a href="#sortCharsBy"
+							onclick="CCIM_CurrentPage.goToPage(CCIM_Data.getNumPages());" 
+							title="Go to last page">&gt;&gt;</a>
+						</th>
+					</tr>
+				</tfoot>
+				
+				<tbody>
+					<tr id='template_charrow1'>
+						<td id='template_Name' title='Name' class="namecol">name</td>
+						
+						<td id='template_Title' title='Title' class="titlecol">title</td>
+						
+						<td><input id="template_Select" type="checkbox" title='Character Selected' 
+							onChange="CCIM_CurrentPage.userChangedSelectChecked(this);"/></td>
+						
+						<td><input size='1' maxlength='2' id="template_Elite" title='Elite'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"
+							onchange='CCIM_CurrentPage.userChangedElite(this);' /></td>
+						
+						<td><input size='1' maxlength='2' id='template_XP' title='XP'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"
+							onchange='CCIM_CurrentPage.userChangedXP(this);' /></td>
+						
+						<td><input size='5' maxlength='7' id="template_Damage" title='Damage'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"
+							onchange='CCIM_CurrentPage.userChangedDamage(this);' /></td>
+						
+						<td><input size='5' maxlength='7' id="template_Health" title='Health'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"
+							onchange='CCIM_CurrentPage.userChangedHealth(this);' /></td>
+						
+					<!--</tr>
+
+					<tr id='template_charrow2'>-->
+						<td><input size='1' maxlength='2' id='template_Sp1Bars' title='# Special 1 Bars'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"					
+							onchange='CCIM_CurrentPage.userChangedSp1Bars(this);' /></td>
+						
+						<td><input size='1' maxlength='2' id='template_Sp2Bars' title='# Special 2 Bars'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"					
+							onchange='CCIM_CurrentPage.userChangedSp2Bars(this);' /></td>
+						
+						<td><input size='1' maxlength='2' id='template_SuperBars' title='# Super Bars'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"
+							onchange='CCIM_CurrentPage.userChangedSuperBars(this);' /></td>
+						
+						<td><input size='1' maxlength='3' id='template_CritChance' title='Crit Chance'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"
+							onChange="CCIM_CurrentPage.userChangedCritChance(this);" /></td>
+						
+						<td><input size='1' maxlength='3' id='template_CritDamage' title='Crit Damage'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"
+							onChange="CCIM_CurrentPage.userChangedCritDamage(this);" /></td>						
+											
+						<td><input size='1' maxlength='1' id="template_GearSlots" title='Gear Slots'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"
+							onChange="CCIM_CurrentPage.userChangedGearSlots(this);" /></td>
+							
+						<td><input id="template_InStore" type="checkbox" title='In Store'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"
+							onChange="CCIM_CurrentPage.userChangedInStore(this);" /></td>
+						
+						<td><input size='1' maxlength='2' id='template_ExtraCards' title='Extra Cards'
+							onfocus="CCIM_Main.helperPopup.show({'reference':this,'content':this.title});"
+							onBlur ="CCIM_Main.helperPopup.hide();"
+							onChange="CCIM_CurrentPage.userChangedExtraCards(this);" /></td>
+						
+						<td id='template_DamagePlusHealth' title='Damage Plus Health'>0</td>
+
+						<td id='template_Cost' title='Cost'>cost</td>
+						<td id='template_Resale' title='Resale'>resale</td>
+					<!--</tr>
+
+					<tr id='template_charrow3'>-->
+						<td id='template_Sp1Min' title='Special 1 Minimum'>0</td>
+						<td id='template_Sp1Max' title='Special 1 Maximum'>0</td>
+
+						<td id='template_Sp2Min' title='Special 2 Minimum'>0</td>
+						<td id='template_Sp2Max' title='Special 2 Maximum'>0</td>
+
+						<td id='template_Super' title='Super'>0</td>
+
+						<td id='template_DamageAug' title='Damage Augmentation Level'>0</td>
+						<td id='template_HealthAug' title='Health Augmentation Level'>0</td>
+
+						<td id='template_BaseDamage' title='Base Damage'>base dmg</td>
+						<td id='template_BaseHealth' title='Base Health'>base health</td>
+						<td id="template_BaseDamagePlusHealth" title='Base Damage + Base Health'>base dmg + health</td>
+						<td id="template_ElitePlusExtraCards" title='Elite + Extra Cards'>elite + extra cards</td>
+					</tr>
+				</tbody>
+			</table>
+		</div><!--template-->
+
+	</div><!-- chartable, messages, template -->
+	<br><br><br>
+</div><!--content-->
+
+<div id="footer">
+	<div class="centeredWide italic">
+		Character Spreadsheet for Injustice Mobile
+		<!--<a href="../makeDonation" target="_blank">Make Donation</a>-->
+	</div>
+</div><!--footer-->
+
+
+
+<span class="savedata"></span>
+
+<div id="loadFromFileDiv" class="indigo-yellow">
+	Load from file: <br>
+	<input type="file" id="txtfiletoload" onchange="CCIM_Restore.onChangeFileToLoad();"/>
+	<br>
+	<input type="checkbox" id="restorePrefsFromFile" checked />Restore Preferences<br>
+	<input type="checkbox" id="restoreFiltersFromFile" checked />Restore Filters<br>
+	<br><a href="#" onclick='CCIM_Restore.doCloseLoadFromFile()'>Close</a>
+</div>
+
+<div id="loadFromServerDiv" class="indigo-yellow">
+	Load from server: <br>
+	<input type="checkbox" id="restorePrefsFromServer" checked />Restore Preferences<br>
+	<input type="checkbox" id="restoreFiltersFromServer" checked />Restore Filters<br>
+	<input type="button" value="Close" onclick='CCIM_Restore.loadFromServerPopup.hide()' />
+	<div id="savedcollections">
+	 (Getting data from the server...)
+	</div>
+</div>
+
+<div id="MsgsDiv" class="indigo-yellow">
+
+</div>
+
+<div id='changeSelectedDiv' class="indigo-yellow">
+			Selected:<br>
+			Change <select id='selCharChgField'>
+					<option value="none" selected	>Select field</option>
+					<option value="Elite"			>Elite</option>
+					<option value="XP"				>XP</option>
+					<option value='Extra_Cards'		>Extra Cards</option>
+				</select> to
+
+				<input id='selCharNewVal' size=2 maxlength=2 />
+				<br>
+				<input type='button' value='Change' onclick='CCIM_CurrentPage.changeSelectedCharactersValue();' />
+</div>
+
+<div id='filtersFormDiv' class="indigo-yellow">
+		<form id="filtersForm">
+
+			<strong>Filters:</strong><br />
+			<input type="button" value="Apply Filters"	onclick='CCIM_CurrentPage.applyFilters();' />
+			<input type='button' value='Show All' 		onclick='CCIM_CurrentPage.ShowAll();' />
+			<input type='button' value='Close' 			onclick='CCIM_Filters.hideFilters();' />
+			<br />
+
+			<fieldset><legend><em>Damage:</em></legend>
+				Between
+				<input id='minDamageFilter' value='0' size='5'/> 
+				and
+				<input id='maxDamageFilter' value='500,000' size='5'/>
+			</fieldset>
+
+			<fieldset><legend><em>Health:</em></legend>
+				Between
+				<input id='minHealthFilter' value='0' size='5'/> 
+				and
+				<input id='maxHealthFilter' value='500,000' size='5'/>
+			</fieldset>
+
+			<fieldset><legend><em>Damage + Health:</em></legend>
+				Between
+				<input id='minDamagePlusHealthFilter' value='0' size='5'/> 
+				and
+				<input id='maxDamagePlusHealthFilter' value='500,000' size='5'/>
+			</fieldset>
+
+			<fieldset><legend><em>Base Damage:</em></legend>
+				Between
+				<input id='minBaseDamageFilter' value='0' size='3'/> 
+				and
+				<input id='maxBaseDamageFilter' value='9999' size='3'/>
+			</fieldset>
+
+			<fieldset><legend><em>Base Health:</em></legend>
+				Between
+				<input id='minBaseHealthFilter' value='0' size='3'/> 
+				and
+				<input id='maxBaseHealthFilter' value='9999' size='3'/>
+			</fieldset>
+			
+			<fieldset><legend><em>Base Damage + Health:</em></legend>
+				Between
+				<input id='minBaseDamagePlusHealthFilter' value='0' size='5'/> 
+				and
+				<input id='maxBaseDamagePlusHealthFilter' value='500,000' size='5'/>
+			</fieldset>
+			
+			<fieldset><legend><em>Elite + Extra Cards:</em></legend>
+				Between
+				<input id='minElitePlusExtraCardsFilter' value='0' size='2'/> 
+				and
+				<input id='maxElitePlusExtraCardsFilter' value='1000' size='2'/>
+			</fieldset>
+
+			<fieldset><legend><em>Cost:</em></legend>
+				Between
+				<input id='minCostFilter' value='0' size='2'/> 
+				and
+				<input id='maxCostFilter' value='1000' size='2'/>
+			</fieldset>
+			
+			<fieldset id='inStoreFilterSet'><legend><em>In Your Store:</em></legend>				
+				<input type='checkbox' id='inStoreFilter' value="inStore"  />
+			</fieldset>
+
+			<fieldset><legend><em>Gear Slots:</em></legend>
+				Between
+				<input id='minGearSlotsFilter' value='1' size='2'/> 
+				and
+				<input id='maxGearSlotsFilter' value='3' size='2'/>
+			</fieldset>
+
+			<fieldset><legend><em>Sp1 Min:</em></legend>
+				Between
+				<input id='minSp1MinFilter' value='0' size='5'/> 
+				and
+				<input id='maxSp1MinFilter' value='500,000' size='5'/>
+			</fieldset>
+
+			<fieldset><legend><em>Sp2 Min:</em></legend>
+				Between
+				<input id='minSp2MinFilter' value='0' size='5'/> 
+				and
+				<input id='maxSp2MinFilter' value='500,000' size='5'/>
+			</fieldset>
+
+			<fieldset><legend><em>Super:</em></legend>
+				Between
+				<input id='minSuperFilter' value='0' size='5'/> 
+				and
+				<input id='maxSuperFilter' value='500,000' size='5'/>
+			</fieldset>
+
+			<fieldset id='colorFilterSet'><legend><em>Color:</em></legend>
+				
+				Gold: <input type='checkbox' id='colorFilterGold'   name="colorFilter[]" value="Gold" checked /><br>
+				Silver: <input type='checkbox' id='colorFilterSilver' name="colorFilter[]" value="Silver" checked /><br>
+				Bronze: <input type='checkbox' id='colorFilterBronze' name="colorFilter[]" value="Bronze" checked />
+				
+			</fieldset>
+
+			<fieldset><legend><em>XP range:</em></legend>
+				Between
+				<input id='minXPFilter' value='0'  size='1' maxlength='2'/> 
+				and
+				<input id='maxXPFilter' value='50' size='1' maxlength='2'/>
+			</fieldset>
+
+			<fieldset id='eliteFilterSet'><legend><em>Elite</em></legend>
+				
+				<input type='checkbox' id='eliteFilter0'   name="eliteFilter[]" value="e0" checked />Normal<br>
+				<input type='checkbox' id='eliteFilter1' name="eliteFilter[]" value="e1" checked />I<br>
+				<input type='checkbox' id='eliteFilter2' name="eliteFilter[]" value="e2" checked />II<br>
+
+				<input type='checkbox' id='eliteFilter3'   name="eliteFilter[]" value="e3" checked />III<br>
+				<input type='checkbox' id='eliteFilter4' name="eliteFilter[]" value="e4" checked />IV<br>
+				<input type='checkbox' id='eliteFilter5' name="eliteFilter[]" value="e5" checked />V<br>
+
+				<input type='checkbox' id='eliteFilter6'   name="eliteFilter[]" value="e6" checked />VI<br>
+				<input type='checkbox' id='eliteFilter7' name="eliteFilter[]" value="e7" checked />VII<br>
+				<input type='checkbox' id='eliteFilter8' name="eliteFilter[]" value="e8" checked />VIII<br>
+				<input type='checkbox' id='eliteFilter9' name="eliteFilter[]" value="e9" checked />IX<br>
+				<input type='checkbox' id='eliteFilter10' name="eliteFilter[]" value="e10" checked />X
+				
+			</fieldset>
+
+			<!--<fieldset id='bonusesFilterSet'><legend><em>Bonuses</em></legend>
+				Damage: <input type='checkbox' id='damageBonusFilter' value="damage+10%" checked />
+				Health: <input type='checkbox' id='healthBonusFilter' value="health+10%" checked />
+			</fieldset>-->
+
+			<fieldset id='nameFilterSet'><legend><em>Name:</em></legend>
+				<input type='button' value='Check All' onclick='CCIM_Filters.setCheckboxes("nameFilterSet",true);' />
+				<input type='button' value='Clear All' onclick='CCIM_Filters.setCheckboxes("nameFilterSet",false);' /><br />
+			</fieldset>
+
+			<fieldset id='titleFilterSet'><legend><em>Title:</em></legend>
+				<input type='button' value='Check All' onclick='CCIM_Filters.setCheckboxes("titleFilterSet",true);' />
+				<input type='button' value='Clear All' onclick='CCIM_Filters.setCheckboxes("titleFilterSet",false);' /><br />
+			</fieldset>
+
+		</form>
+</div>
+
+<div id="configColsDiv" class="indigo-yellow">
+	<form id="configColsForm">
+		<strong style="font-size:110%">Configure Columns</strong><br>
+		<strong>Select columns to display</strong><br>
+		To select more than one column,<br>
+		Windows: Use the Ctrl key<br>
+		Mac: Use the Command key<br>
+		and click on each name.<br>
+		<select id="displayColumns" multiple size="6" onchange="CCIM_ConfigColumns.onchangeDisplayColumns();">
+			<option value="Select">Select</option>
+			<option value="Elite">Elite</option>
+			<option value="XP" >XP</option>
+			<option value="Damage" >Damage</option>
+			<option value="Health" >Health</option>
+			<option value="Sp1Bars">Sp1 Bars</option>
+			<option value="Sp2Bars">Sp2 Bars</option>
+			<option value="SuperBars">Super Bars</option>
+			<option value="CritChance">Crit Chance</option>
+			<option value="CritDamage">Crit Damage</option>
+			<option value="GearSlots" >Gear Slots</option>
+			<option value="InStore">In Store</option>
+			<option value="ExtraCards">Extra Cards</option>
+			<option value="ElitePlusExtraCards">Elite + Extra Cards</option>
+			<option value="DamagePlusHealth">Damage + Health</option>
+			<option value="Cost">Cost</option>
+			<option value="Resale">Resale</option>
+			<option value="Sp1Min">Sp1 Min</option>
+			<option value="Sp1Max">Sp1 Max</option>
+			<option value="Sp2Min">Sp2 Min</option>
+			<option value="Sp2Max">Sp2 Max</option>
+			<option value="Super">Super</option>
+			<option value="DamageAug">Damage Augmentation Level</option>
+			<option value="HealthAug">Health Augmentation Level</option>
+			<option value="BaseDamage">Base Damage</option>
+			<option value="BaseHealth">Base Health</option>
+			<option value="BaseDamagePlusHealth">Base Damage + Base Health</option>
+		</select>
+		<br>
+		Note: <em>Name</em>, <em>Title</em> and <em>Select</em> <br>
+		are required columns.<br>
+
+		<br>
+		<strong>Choose order of selected columns</strong>
+		<br>
+		Click on a column name to select it, then<br>
+		click on the buttons to move it in the list.
+		
+		<ol id="selectedDisplayColumns">
+		</ol>
+		<input type="button" value="Move Up" onclick="CCIM_ConfigColumns.moveSelectedColUp()"/>
+		<input type="button" value="Move Down" onclick="CCIM_ConfigColumns.moveSelectedColDown()"/>
+		<br>
+		<input type="button" value="Make First" onclick="CCIM_ConfigColumns.moveSelectedColToTop()"/>
+		<input type="button" value="Make Last" onclick="CCIM_ConfigColumns.moveSelectedColToBottom()"/>
+		<br>
+		<input type="button" value="Apply Changes" onclick="CCIM_ConfigColumns.applyChangedConfig()"/>
+		<input type="button" value="Close" onclick="CCIM_ConfigColumns.doClose()"/>
+	</form>
+</div>
+
+<div id="supportCardsDiv" class="indigo-yellow">
+	<input type="button" value="Apply"	onclick='CCIM_CurrentPage.applyBonusChanges();' />
+	<br>
+
+	<div id='allcharbonusesdiv'>
+		<table id='allCharsBonusTable'>
+			<caption><strong>Support Cards for All Characters</strong></caption>
+			<tr id="dmgBonusSet">
+				<td >Ravager:<input type='checkbox' id='Ravager' name="dmgBonus[]" value='Ravager' checked /></td>
+				<td >Starfire:<input type='checkbox' id='Starfire' name="dmgBonus[]" value='Starfire' checked /></td>
+				<td >Talia Al Ghul:<input type='checkbox' id='TaliaAlGhul' name="dmgBonus[]" value='TaliaAlGhul' checked /></td>
+				<td >The Spectre:<input type='checkbox' id='TheSpectre' name="dmgBonus[]" value='TheSpectre' checked /></td>
+				<td >Tim Drake:<input type='checkbox' id='TimDrake' name="dmgBonus[]" value='TimDrake' checked /></td>
+			</tr>
+				
+			<tr id="hthBonusSet">
+				<td ><input type='checkbox' id='BlackManta' name="hthBonus[]" value='BlackManta' checked />Black Manta</td>
+				<td ><input type='checkbox' id='Hawkman' name="hthBonus[]" value='Hawkman' checked />Hawkman</td>
+				<td ><input type='checkbox' id='Kilowog' name="hthBonus[]" value='Kilowog' checked />Kilowog</td>
+				<td ><input type='checkbox' id='Parallax' name="hthBonus[]" value='Parallax' checked />Parallax</td>
+				<td ><input type='checkbox' id='SwampThing' name="hthBonus[]" value='SwampThing' checked />Swamp Thing</td>
+			</tr>
+		</table>
+	</div><!--allcharbonuses-->
+	<br>
+	
+	<input type="button" value="Clear All"	onclick='CCIM_Bonuses.setCheckboxes(false);' />
+	<input type="button" value="Set All"	onclick='CCIM_Bonuses.setCheckboxes(true);' />
+	
+	<div><!--char bonuses-->
+		<table id='CharBonusesTable'>
+			<caption><strong>Character Support Cards</strong></caption>
+			<thead>
+				<tr>
+					<th>Name</th> <th>Damage</th> <th>Health</th> 
+				</tr>
+			</thead>
+		
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</div><!--supportCardsDiv-->
+
+<div id="copyrightDiv" class="indigo-yellow">
+<p>Copyright (c) 2014-2017 L Murphy</p>
+
+<p>Definition of the "Software": all of the documentation and code of the Character Spreadsheet for Injustice Mobile with the <strong>exceptions</strong> of Matt Kruse's Popups (see <a target=_blank href="http://www.mattkruse.com/javascript/popupwindow/source.html">popup window source</a>) and Paul Johnston's &amp; Greg Holt's MD5 (RSA Data Security, Inc. MD5 Message-Digest Algorithm; see
+<a target=_blank href="http://pajhome.org.uk/site/legal.html">pajhome.org.uk/site/legal.html</a>). These portions of the project have their own copyrights and permissions.
+</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this Software and associated documentation files, to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+<p>Ownership of all other copyrights and trademarks are maintained by their respective owners.</p>
+<hr>
+
+<p>A copy of this software may be obtained from
+<a target=_blank href="https://github.com/LMurphy001/IGAU-char-collection">GitHub</a>. You may obtain copies of Popups and MD5 from the links above.</p>
+
+</div>
+
+<script type="text/javascript" src="mycode.js"></script>
+
+</body>
+</html>
